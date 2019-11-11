@@ -2,7 +2,10 @@ const ytdl = require('ytdl-core');
 const http = require('http'); 
 const url = require('url');
 
+console.log("starting up...")
+
 http.createServer(function (req, res) { 
+	console.log("server starting...")
 	if (!url.parse(req.url,true).search) {
 		res.writeHead(404, {"Content-Type": "text/plain"});
 		res.end("404: no url found");
@@ -19,3 +22,4 @@ http.createServer(function (req, res) {
 		res.end(json);
 	})
 }).listen(3000);
+console.log("listening...")
