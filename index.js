@@ -5,7 +5,7 @@ const url = require('url');
 console.log("starting up...")
 
 http.createServer(function (req, res) { 
-	console.log("server starting...")
+	console.log("got request!")
 	if (!url.parse(req.url,true).search) {
 		res.writeHead(404, {"Content-Type": "text/plain"});
 		res.end("404: no url found");
