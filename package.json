@@ -1,27 +1,30 @@
 {
-  "name": "taylor-backend",
-  "version": "1.0.0",
-  "description": "Taylor's backend stufwergbuihneatgbiomsgfb",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/n0rmancodes/taylor-backend.git"
-  },
-  "keywords": [
-    "youtube-dl"
-  ],
-  "author": "n0rmancodes",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/n0rmancodes/taylor-backend/issues"
-  },
-  "homepage": "https://github.com/n0rmancodes/taylor-backend#readme",
-  "dependencies": {
-    "node-youtube-dl": "0.0.2",
-    "youtube-dl": "^2.0.1",
-    "ytdl-core": "^1.0.0"
-  }
+	"name": "taylor-backend",
+	"version": "1.0.0",
+	"description": "Taylor's backend stufwergbuihneatgbiomsgfb",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/n0rmancodes/taylor-backend.git"
+	},
+	"keywords": [
+		"youtube-dl"
+	],
+	"author": "n0rmancodes",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/n0rmancodes/taylor-backend/issues"
+	},
+	"homepage": "https://github.com/n0rmancodes/taylor-backend#readme",
+	"dependencies": {
+		"node-youtube-dl": "0.0.2",
+		"youtube-dl": "^2.0.1",
+		"ytdl-core": "^1.0.0"
+	}
+	"scripts": {
+		"start": "node ."
+	}
 }
