@@ -14,7 +14,7 @@ function onrequest(request, response) {
 		return;
 	}
 	
-	if (!oUrl.query.url | !oUrl.query.url.includes("youtu")) {
+	if (!oUrl.query.url) {
 		response.statusCode = 404;
 		response.end("404");
 		console.log("invalid request")
