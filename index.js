@@ -25,19 +25,9 @@ function onrequest(request, response) {
 	}
 	
 	ytdl(dUrl, function(err, info) {
-		if (err) {
-			var json = JSON.stringify ({
-				datainfo: err
-			})
-			response.writeHead(200, {
-				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*"
-			});
-			response.end(json);
-			return;
-		}
+		let vaFormats = ytdl.filterFormats(info.formats, 'audioandvideo');
 		var json = JSON.stringify ({
-			datainfo: info
+			datainfo: vaFormats
 		})
 		response.writeHead(200, {
 			"Content-Type": "application/json",
