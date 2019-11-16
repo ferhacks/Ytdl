@@ -23,16 +23,29 @@ function onrequest(request, response) {
 		var dUrl = oUrl.query.url;
 		console.log("got url: " + dUrl);
 	}
-	
-	ytdl(dUrl, function(err, info) {
-		let vaFormats = ytdl.filterFormats(info.formats, 'audioandvideo');
-		var json = JSON.stringify ({
-			datainfo: vaFormats
+	if (!oUrl.query.format) {
+		ytdl(dUrl, function(err, info) {
+			let vaFormats = ytdl.filterFormats(info.formats, 'audioandvideo');
+			var json = JSON.stringify ({
+				datainfo: vaFormats
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
 		})
-		response.writeHead(200, {
-			"Content-Type": "application/json",
-			"Access-Control-Allow-Origin": "*"
-		});
-		response.end(json);
-	})
+	} else if (oUrl.query.format === "audioOnly") {
+		ytdl(dUrl, function(err, info) {
+			let aFormats = ytdl.filterFormats(info.formats, 'audioonly');
+			var json = JSON.stringify ({
+				datainfo: aFormats
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+		})
+	}
 }
