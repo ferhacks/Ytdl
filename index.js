@@ -25,6 +25,17 @@ function onrequest(request, response) {
 	}
 	
 	ytdl(dUrl, function(err, info) {
+		if (err) {
+			var json = JSON.stringify ({
+				datainfo: err
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+			return;
+		}
 		var json = JSON.stringify ({
 			datainfo: info
 		})
