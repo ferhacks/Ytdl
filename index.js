@@ -7,6 +7,13 @@ function onrequest(request, response) {
 	console.log("got request!");
 	var oUrl = url.parse(request.url, true);
 	
+	if (oUrl.path === "/favicon.ico") {
+		response.statusCode = 404;
+		response.end("404");
+		console.log("invalid request")
+		return;
+	}
+	
 	if (!oUrl.query.url | !oUrl.query.url.includes("youtu")) {
 		response.statusCode = 404;
 		response.end("404");
