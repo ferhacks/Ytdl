@@ -1,28 +1,30 @@
 const ytdl = require('ytdl-core');
 const http = require('http'); 
 const url = require('url');
+http.createServer(onrequest).listen(process.env.PORT || 3000);
 
-console.log("starting up...")
-
-http.createServer(function (req, res) { 
-	console.log("got request!")
+function onrequest(request, response) {
+	console.log("got request!");
+	var oUrl = url.parse(request.url, true);
 	
-	if (!url.parse(req.url,true).search) {
-		res.writeHead(404, {"Content-Type": "text/plain"});
-		res.end("404: no url found");
+	if (!oUrl.query.url | !oUrl.query.url.includes("youtu")) {
+		response.statusCode = 404;
+		response.end("404");
+		console.log("invalid request")
 		return;
 	} else {
-		var dUrl = url.parse(req.url,true).search.substring(5,999);
-		console.log("parsed url: " + dUrl);
+		var dUrl = oUrl.query.url;
+		console.log("got url: " + dUrl);
 	}
 	
 	ytdl(dUrl, function(err, info) {
 		var json = JSON.stringify ({
 			datainfo: info
 		})
-		res.writeHead(200, {"Content-Type": "application/json"});
-		res.end(json);
+		response.writeHead(200, {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*"
+		});
+		response.end(json);
 	})
-}).listen(3000);
-
-console.log("listening...")
+}
