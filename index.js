@@ -23,7 +23,7 @@ function onrequest(request, response) {
 	}
 	
 	if (oUrl.query.info) {
-		console.log("got info for url: " + dUrl);
+		console.log("getting info for url: " + dUrl);
 		ytdl(dUrl, function(err, info) {
 			var json = JSON.stringify ({
 				info
@@ -37,8 +37,24 @@ function onrequest(request, response) {
 		})
 	}
 	
+	if (oUrl.query.audio) {
+		ytdl(dUrl, function(err, info) {
+			console.log("getting audio download url: " + dUrl);
+			let aFormats = ytdl.filterFormats(info.formats, 'audioonly');
+			var json = JSON.stringify ({
+				datainfo: aFormats
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+			return;
+		})
+	}
+	
 	ytdl(dUrl, function(err, info) {
-		console.log("got download url: " + dUrl);
+		console.log("getting video download url: " + dUrl);
 		let vaFormats = ytdl.filterFormats(info.formats, 'audioandvideo');
 		var json = JSON.stringify ({
 			datainfo: vaFormats
