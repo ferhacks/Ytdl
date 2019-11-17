@@ -22,7 +22,7 @@ function onrequest(request, response) {
 		var dUrl = oUrl.query.url;
 	}
 	
-	if (oUrl.query.info) {
+	if (oUrl.query.info === "1") {
 		console.log("getting info for url: " + dUrl);
 		ytdl(dUrl, function(err, info) {
 			var json = JSON.stringify ({
@@ -33,11 +33,11 @@ function onrequest(request, response) {
 				"Access-Control-Allow-Origin": "*"
 			});
 			response.end(json);
-			return;
 		})
+		return;
 	}
 	
-	if (oUrl.query.audio) {
+	if (oUrl.query.audio === "1") {
 		ytdl(dUrl, function(err, info) {
 			console.log("getting audio download url: " + dUrl);
 			let aFormats = ytdl.filterFormats(info.formats, 'audioonly');
@@ -49,8 +49,8 @@ function onrequest(request, response) {
 				"Access-Control-Allow-Origin": "*"
 			});
 			response.end(json);
-			return;
 		})
+		return;
 	}
 	
 	ytdl(dUrl, function(err, info) {
