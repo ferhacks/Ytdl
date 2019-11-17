@@ -4,7 +4,6 @@ const url = require('url');
 http.createServer(onrequest).listen(process.env.PORT || 3000);
 
 function onrequest(request, response) {
-	console.log("got request!");
 	var oUrl = url.parse(request.url, true);
 	
 	if (oUrl.path === "/favicon.ico") {
@@ -27,7 +26,7 @@ function onrequest(request, response) {
 		console.log("got info for url: " + dUrl);
 		ytdl(dUrl, function(err, info) {
 			var json = JSON.stringify ({
-				datainfo: info
+				info
 			})
 			response.writeHead(200, {
 				"Content-Type": "application/json",
