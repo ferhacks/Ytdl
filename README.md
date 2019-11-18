@@ -1,5 +1,5 @@
 # taylor-backend
-A heroku-ready YouTube downloader API.
+A heroku-ready JSON YouTube downloader API.
 
 ## Public Demo 
 A demo of the API can be used [here](https://taylorbackend.herokuapp.com).
