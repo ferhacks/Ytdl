@@ -4,7 +4,8 @@ Used in [taylor](https://n0rmancodes.github.io/taylor/) currently.
 
 ## Public Demo 
 A demo of the API can be used [here](https://taylorbackend.herokuapp.com).
-Please host this yourself and do not use the public demo in yourself, unless this is only as **LIGHT/MINOR TESTING**.
+
+Please host on your own heroku server (a free hosting service) and do not use the public demo in yourself, unless this is only as **LIGHT/MINOR TESTING**.
 
 ## Endpoints
 ### A response for DL links with audio and video:
