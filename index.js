@@ -43,14 +43,25 @@ function onrequest(request, response) {
 	if (oUrl.query.info === "1") {
 		console.log("getting info for url: " + dUrl);
 		ytdl(dUrl, function(err, info) {
-			var json = JSON.stringify ({
-				info
-			})
-			response.writeHead(200, {
-				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*"
-			});
-			response.end(json);
+			if (!err) {
+				var json = JSON.stringify ({
+					info
+				})
+				response.writeHead(200, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json);
+			} else {
+				var json = JSON.stringify ({
+					err
+				})
+				response.writeHead(200, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json);
+			}
 		})
 		return;
 	}
