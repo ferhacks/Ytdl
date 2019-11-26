@@ -57,6 +57,30 @@ function onrequest(request, response) {
 	
 	if (oUrl.query.audio === "1") {
 		ytdl(dUrl, function(err, info) {
+			if (err) {
+				console.log("error!: " + err)
+				var json = JSON.stringify ({
+					"err": err
+				})
+				response.writeHead(404, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json)
+				return;
+			}
+			if (!info.formats) {
+				console.log("no formats found")
+				var json = JSON.stringify ({
+					"err": "noFormats"
+				})
+				response.writeHead(404, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json)
+				return;
+			}
 			console.log("getting audio download url: " + dUrl);
 			let aFormats = ytdl.filterFormats(info.formats, 'audioonly');
 			var json = JSON.stringify ({
@@ -73,6 +97,30 @@ function onrequest(request, response) {
 	
 	ytdl(dUrl, function(err, info) {
 		console.log("getting video download url: " + dUrl);
+		if (err) {
+			console.log("error!: " + err)
+			var json = JSON.stringify ({
+				"err": err
+			})
+			response.writeHead(404, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json)
+			return;
+		}
+		if (!info.formats) {
+			console.log("no formats found")
+			var json = JSON.stringify ({
+				"err": "noFormats"
+			})
+			response.writeHead(404, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json)
+			return;
+		}
 		let vaFormats = ytdl.filterFormats(info.formats, 'audioandvideo');
 		var json = JSON.stringify ({
 			datainfo: vaFormats
