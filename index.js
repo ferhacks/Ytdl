@@ -1,4 +1,6 @@
 const ytdl = require('ytdl-core');
+const ytsr = require('ytsr');
+let filter;
 const http = require('http'); 
 const url = require('url');
 http.createServer(onrequest).listen(process.env.PORT || 3000);
@@ -6,20 +8,36 @@ http.createServer(onrequest).listen(process.env.PORT || 3000);
 function onrequest(request, response) {
 	var oUrl = url.parse(request.url, true);
 	
-	if (oUrl.path === "/favicon.ico") {
-		response.statusCode = 404;
-		response.end("404");
-		console.log("invalid request")
-		return;
-	}
-	
-	if (!oUrl.query.url) {
+	if (!oUrl.query.url && !oUrl.query.search) {
 		response.statusCode = 404;
 		response.end("404");
 		console.log("invalid request")
 		return;
 	} else {
 		var dUrl = oUrl.query.url;
+	}
+	
+	if (oUrl.query.search) {
+		var search = oUrl.query.search;
+		console.log("searched for: " + search);
+		ytsr.getFilters(search, function(err, filters) {
+			filter = filters.get('Type').find(o => o.name === 'Video');
+			var options = {
+				limit: 5,
+				nextpageRef: filter.ref,
+			}
+			ytsr(search, options, function(err, searchResults) {
+				var json = JSON.stringify ({
+					searchResults
+				})
+				response.writeHead(200, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json);
+			})
+		})
+		return;
 	}
 	
 	if (oUrl.query.info === "1") {
