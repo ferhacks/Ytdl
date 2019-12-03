@@ -95,7 +95,8 @@ function onrequest(request, response) {
 			console.log("getting audio download url: " + dUrl);
 			let aFormats = ytdl.filterFormats(info.formats, 'audioonly');
 			var json = JSON.stringify ({
-				datainfo: aFormats
+				datainfo: aFormats,
+				info
 			})
 			response.writeHead(200, {
 				"Content-Type": "application/json",
