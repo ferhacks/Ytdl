@@ -44,7 +44,8 @@ function onrequest(request, response) {
 	if (oUrl.query.md) {
 		var md = oUrl.query.md
 		var yt = url.parse(md);
-		var id = yt.query.v;
+		var id = yt.search.substring(3);
+		console.log(id)
 		if (!id) {
 			var json = JSON.stringify ({
 				"err": "noProperUrl"
