@@ -43,7 +43,21 @@ function onrequest(request, response) {
 	
 	if (oUrl.query.md) {
 		var md = oUrl.query.md
-		var id = md.substring(28)
+		var yt = url.parse(md);
+		var id = yt.query.v;
+		if (!id) {
+			var json = JSON.stringify ({
+				"err": "noProperUrl"
+			})
+			response.writeHead(404, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+			console.log("invalid request")
+			console.log(err)
+			return;
+		}
 		console.log(id)
 		fetchVideoInfo(id, function (err, videoInfo) {
 			if (err) {
