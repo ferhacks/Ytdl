@@ -3,12 +3,13 @@ const ytsr = require('ytsr');
 let filter;
 const http = require('http'); 
 const url = require('url');
+var fetchVideoInfo = require('youtube-info');
 http.createServer(onrequest).listen(process.env.PORT || 3000);
 
 function onrequest(request, response) {
 	var oUrl = url.parse(request.url, true);
 	
-	if (!oUrl.query.url && !oUrl.query.search) {
+	if (!oUrl.query.url && !oUrl.query.search && !oUrl.query.md) {
 		response.statusCode = 404;
 		response.end("404");
 		console.log("invalid request")
@@ -23,7 +24,7 @@ function onrequest(request, response) {
 		ytsr.getFilters(search, function(err, filters) {
 			filter = filters.get('Type').find(o => o.name === 'Video');
 			var options = {
-				limit: 5,
+				limit: 10,
 				nextpageRef: filter.ref,
 			}
 			ytsr(search, options, function(err, searchResults) {
@@ -36,6 +37,39 @@ function onrequest(request, response) {
 				});
 				response.end(json);
 			})
+		})
+		return;
+	}
+	
+	if (oUrl.query.md) {
+		var md = oUrl.query.md
+		var id = md.substring(28)
+		console.log(id)
+		fetchVideoInfo(id, function (err, videoInfo) {
+			if (err) {
+				var json = JSON.stringify ({
+					"err": err
+				})
+				response.writeHead(404, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json);
+				console.log("youtube-info err")
+				console.log(err)
+				return;
+			} else {
+				var json = JSON.stringify ({
+					"meta": videoInfo
+				})
+				response.writeHead(200, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json);
+				console.log("got metadata for url: " + md)
+				return;
+			}
 		})
 		return;
 	}
@@ -67,6 +101,18 @@ function onrequest(request, response) {
 	}
 	
 	if (oUrl.query.audio === "1") {
+		if (!dUrl.includes("http")) {
+			var json = JSON.stringify ({
+				"err": "mustBeUrl"
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+			console.log("invalid request")
+			return;
+		}
 		ytdl(dUrl, function(err, info) {
 			if (err) {
 				console.log("error!: " + err)
@@ -108,6 +154,18 @@ function onrequest(request, response) {
 	}
 	
 	ytdl(dUrl, function(err, info) {
+		if (!dUrl.includes("http")) {
+			var json = JSON.stringify ({
+				"err": "mustBeUrl"
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+			console.log("invalid request")
+			return;
+		}
 		console.log("getting video download url: " + dUrl);
 		if (err) {
 			console.log("error!: " + err)
