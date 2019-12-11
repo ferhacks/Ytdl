@@ -55,7 +55,6 @@ function onrequest(request, response) {
 			});
 			response.end(json);
 			console.log("invalid request")
-			console.log(err)
 			return;
 		}
 		console.log(id)
