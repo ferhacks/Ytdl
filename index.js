@@ -41,11 +41,63 @@ function onrequest(request, response) {
 		return;
 	}
 	
+	if (oUrl.query.video) {
+		if (!dUrl.includes("http")) {
+			var json = JSON.stringify ({
+				"err": "mustBeUrl"
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+			console.log("invalid request")
+			return;
+		}
+		ytdl(dUrl, function(err, info) {
+			if (err) {
+				console.log("error!: " + err)
+				var json = JSON.stringify ({
+					"err": err
+				})
+				response.writeHead(404, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json)
+				return;
+			}
+			if (!info.formats) {
+				console.log("no formats found")
+				var json = JSON.stringify ({
+					"err": "noFormats"
+				})
+				response.writeHead(404, {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*"
+				});
+				response.end(json)
+				return;
+			}
+			console.log("getting video download url: " + dUrl);
+			let aFormats = ytdl.filterFormats(info.formats, 'videoonly');
+			var json = JSON.stringify ({
+				datainfo: aFormats,
+				info
+			})
+			response.writeHead(200, {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
+			});
+			response.end(json);
+		})
+		return;
+	}
+	
 	if (oUrl.query.md) {
 		var md = oUrl.query.md
 		var yt = url.parse(md);
 		var id = yt.search.substring(3);
-		console.log(id)
 		if (!id) {
 			var json = JSON.stringify ({
 				"err": "noProperUrl"
@@ -58,7 +110,6 @@ function onrequest(request, response) {
 			console.log("invalid request")
 			return;
 		}
-		console.log(id)
 		fetchVideoInfo(id, function (err, videoInfo) {
 			if (err) {
 				var json = JSON.stringify ({
