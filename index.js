@@ -9,7 +9,7 @@ http.createServer(onrequest).listen(process.env.PORT || 3000);
 function onrequest(request, response) {
 	var oUrl = url.parse(request.url, true);
 	
-	if (!oUrl.query.url && !oUrl.query.search && !oUrl.query.md) {
+	if (!oUrl.query.url && !oUrl.query.search && !oUrl.query.md && !oUrl.query.video) {
 		response.statusCode = 404;
 		response.end("404");
 		console.log("invalid request")
