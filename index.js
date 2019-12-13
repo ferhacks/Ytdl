@@ -41,7 +41,7 @@ function onrequest(request, response) {
 		return;
 	}
 	
-	if (oUrl.query.video) {
+	if (oUrl.query.video === "1") {
 		if (!dUrl.includes("http")) {
 			var json = JSON.stringify ({
 				"err": "mustBeUrl"
