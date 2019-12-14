@@ -3,7 +3,7 @@ A heroku-ready JSON YouTube downloader API.
 Used in [taylor](https://n0rmancodes.github.io/taylor/) currently.
 
 ## Public Demo 
-A demo of the API can be used [here](https://taylorbackend.herokuapp.com).
+A demo of the API can be used [here](https://open-ytdl-api.herokuapp.com).
 
 Please host on your own heroku server (a free hosting service) and do not use the public demo in yourself, unless this is only as **LIGHT/MINOR TESTING**.
 
